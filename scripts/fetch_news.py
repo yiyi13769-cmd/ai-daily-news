@@ -15,25 +15,29 @@ from openai import OpenAI
 
 # ── RSS 源配置 ────────────────────────────────────────────────────────────────
 RSS_SOURCES = [
-    # 英文 AI 媒体
-    {"name": "TechCrunch AI",      "url": "https://techcrunch.com/tag/artificial-intelligence/feed/", "category": "行业动态"},
-    {"name": "VentureBeat AI",     "url": "https://venturebeat.com/feed/",                            "category": "行业动态"},
-    {"name": "The Verge AI",       "url": "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml", "category": "行业动态"},
-    {"name": "MIT Tech Review",    "url": "https://www.technologyreview.com/feed/",                   "category": "前沿研究"},
-    {"name": "Wired AI",           "url": "https://www.wired.com/feed/tag/ai/latest/rss",             "category": "行业动态"},
-    {"name": "Ars Technica AI",    "url": "https://feeds.arstechnica.com/arstechnica/technology-lab", "category": "技术资讯"},
-    # 学术 / 论文
-    {"name": "ArXiv cs.AI",        "url": "https://arxiv.org/rss/cs.AI",                              "category": "前沿研究"},
-    {"name": "ArXiv cs.LG",        "url": "https://arxiv.org/rss/cs.LG",                              "category": "前沿研究"},
-    {"name": "Papers With Code",   "url": "https://paperswithcode.com/latest.rss",                    "category": "前沿研究"},
-    # 技术社区
-    {"name": "Hacker News",        "url": "https://news.ycombinator.com/rss",                         "category": "技术社区"},
-    {"name": "Reddit ML",          "url": "https://www.reddit.com/r/MachineLearning/.rss",            "category": "技术社区"},
-    {"name": "Reddit LocalLLaMA",  "url": "https://www.reddit.com/r/LocalLLaMA/.rss",                "category": "技术社区"},
-    # 中文资讯
-    {"name": "机器之心",            "url": "https://www.jiqizhixin.com/rss",                           "category": "中文资讯"},
-    {"name": "量子位",              "url": "https://www.qbitai.com/feed",                              "category": "中文资讯"},
-    {"name": "36Kr AI",             "url": "https://36kr.com/feed",                                    "category": "中文资讯"},
+    # 🌍 海外一手（套利源）——国内通常晚1-3天，主动挖掘
+    {"name": "Product Hunt AI",   "url": "https://www.producthunt.com/topics/artificial-intelligence/feed", "category": "海外一手"},
+    {"name": "Ben's Bites",       "url": "https://bensbites.beehiiv.com/feed",                             "category": "海外一手"},
+    {"name": "Hacker News",       "url": "https://news.ycombinator.com/rss",                               "category": "海外一手"},
+
+    # ⚡ AI 工具与实践（可直接用）
+    {"name": "Simon Willison",    "url": "https://simonwillison.net/atom/everything/",                     "category": "AI实践"},
+    {"name": "TLDR AI",           "url": "https://tldr.tech/ai/rss",                                       "category": "AI实践"},
+    {"name": "The Verge AI",      "url": "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml", "category": "AI实践"},
+
+    # 🎬 AIGC 行业动态（模型/产品发布，影响创作工具链）
+    {"name": "TechCrunch AI",     "url": "https://techcrunch.com/tag/artificial-intelligence/feed/",       "category": "AIGC动态"},
+    {"name": "VentureBeat AI",    "url": "https://venturebeat.com/feed/",                                  "category": "AIGC动态"},
+
+    # 🧠 认知成长（思维模型、决策框架）
+    {"name": "Farnam Street",     "url": "https://fs.blog/feed/",                                          "category": "认知成长"},
+    {"name": "Ness Labs",         "url": "https://nesslabs.com/feed",                                      "category": "认知成长"},
+
+    # 🇨🇳 中文资讯
+    {"name": "机器之心",           "url": "https://www.jiqizhixin.com/rss",                                 "category": "中文资讯"},
+    {"name": "量子位",             "url": "https://www.qbitai.com/feed",                                    "category": "中文资讯"},
+    {"name": "36Kr AI",            "url": "https://36kr.com/feed",                                          "category": "中文资讯"},
+    {"name": "少数派",             "url": "https://sspai.com/feed",                                         "category": "实践技巧"},
 ]
 
 # AI/AIGC 关键词过滤（用于非专属 AI 源）
@@ -43,11 +47,28 @@ AI_KEYWORDS = [
     "gemini", "chatgpt", "generative", "diffusion", "transformer", "aigc",
     "midjourney", "stable diffusion", "openai", "anthropic", "deepmind",
     "meta ai", "mistral", "agent", "rag", "fine-tuning", "reinforcement",
+    "workflow", "prompt", "automation", "productivity", "tool", "plugin",
+    "no-code", "api",
     "人工智能", "机器学习", "大模型", "生成式", "语言模型", "智能体",
+    "实践", "工作流", "提效", "自动化", "插件", "技巧", "用法",
+    # 认知/成长类
+    "mental model", "decision", "thinking", "learning", "habit", "focus",
+    "cognitive", "creativity", "framework", "system",
+    "思维", "认知", "决策", "成长", "学习方法", "框架",
+    # 创作者/自媒体类
+    "creator", "content", "audience", "newsletter", "social media",
+    "monetize", "growth", "viral", "video", "image generation",
+    "创作", "博主", "粉丝", "涨粉", "变现", "选题", "视频",
+    # AI Agent 追踪类
+    "agent", "autonomous", "agentic", "workflow", "automation",
 ]
 
 # 需要关键词过滤的非专属 AI 源
-NEEDS_FILTER = {"Hacker News", "MIT Tech Review", "Ars Technica AI", "Reddit ML", "VentureBeat AI", "36Kr AI"}
+NEEDS_FILTER = {
+    "Hacker News", "VentureBeat AI", "36Kr AI",
+    "Ben's Bites", "Product Hunt AI",
+    "Farnam Street", "Ness Labs", "少数派",
+}
 
 HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; AINewsBot/1.0)"}
 
@@ -80,7 +101,7 @@ def fetch_recent_news(hours: int = 24) -> list[dict]:
                 continue
 
             title   = entry.get("title", "").strip()
-            summary = re.sub(r"<[^>]+>", "", entry.get("summary", ""))[:400].strip()
+            summary = re.sub(r"<[^>]+>", "", entry.get("summary", ""))[:600].strip()
             link    = entry.get("link", "")
 
             if not title or not link:
@@ -115,7 +136,7 @@ def fetch_recent_news(hours: int = 24) -> list[dict]:
         key=lambda x: x["pub_time"] or datetime.min.replace(tzinfo=timezone.utc),
         reverse=True,
     )
-    return unique[:20]
+    return unique[:30]
 
 
 # ── DeepSeek 生成摘要 ─────────────────────────────────────────────────────────
@@ -130,17 +151,40 @@ def generate_summary(news_items: list[dict]) -> str:
     for i, item in enumerate(news_items, 1):
         news_text += f"{i}. 【{item['category']}】{item['title']}\n"
         if item["summary"]:
-            news_text += f"   摘要: {item['summary'][:200]}\n"
+            news_text += f"   摘要: {item['summary']}\n"
         news_text += f"   来源: {item['source']}\n\n"
 
-    prompt = f"""你是专业的 AI 行业分析师，请将以下 {len(news_items)} 条 AI/AIGC 新闻整理成每日简报。
+    prompt = f"""你是一位服务于 AIGC 自媒体创作者的内容情报官。
+读者是做 AIGC 内容的自媒体博主，关注：AI 创作工具、国际信息套利、个人成长认知、提效工作流。
 
-要求：
-1. 输出**今日重点**（最重要的 3 条，每条 2 句话）
-2. 输出**分类速览**（按行业动态/前沿研究/技术社区/中文资讯分组，每条 1 句话）
-3. 最后写**今日总结**（不超过 60 字，点出当天最大趋势）
-4. 全部用中文，语言简洁有力，避免废话
-5. 使用 Markdown 格式（## 和 ### 标题）
+请从以下 {len(news_items)} 条资讯中，按下面的框架整理每日简报：
+
+---
+
+## 🌍 套利先机（1-3条）
+国际上已有热度、但国内中文媒体还没充分报道的资讯。
+每条格式：
+- **[标题/事件]**：1句话说清楚是什么，1句话说"为什么中文创作者现在就该跟进"
+
+## ⚡ AIGC工具速报（最多4条）
+直接影响 AI 创作流程的工具更新、新功能、新玩法。
+每条格式：
+- **[工具名]**：做了什么更新 → 创作者能用它做什么
+
+## 🎯 今日选题推荐（1-2条）
+基于今天的资讯，最适合做成短视频/图文/深度文章的方向。
+每条格式：
+- **选题方向**：[具体标题建议] — 切入角度说明（1句话）
+
+## 🧠 认知升级
+（不超过60字）从今天的资讯中提炼一个值得记住的思维框架或认知升级点。
+
+---
+
+筛选原则：
+- 优先：工具发布/更新、创作方法论、AI Agent 新进展、认知框架
+- 忽略：纯融资新闻、学术论文、基准跑分、政策文件
+- 套利判断：资讯来自英文源 且 中文资讯源中没有对应内容 → 标记为套利先机
 
 今日新闻（{today}）：
 {news_text}"""
@@ -148,7 +192,7 @@ def generate_summary(news_items: list[dict]) -> str:
     response = client.chat.completions.create(
         model="deepseek-chat",
         messages=[{"role": "user", "content": prompt}],
-        max_tokens=2000,
+        max_tokens=3000,
         temperature=0.7,
     )
     return response.choices[0].message.content
@@ -181,7 +225,11 @@ def build_email_html(summary: str, news_items: list[dict]) -> str:
         categories[item["category"]].append(item)
 
     links_html = ""
-    cat_icons = {"行业动态": "📰", "前沿研究": "🔬", "技术社区": "💬", "中文资讯": "🇨🇳", "技术资讯": "🛠️"}
+    cat_icons = {
+        "海外一手": "🌍", "AI实践": "⚡", "AIGC动态": "🎬",
+        "认知成长": "🧠", "中文资讯": "🇨🇳", "实践技巧": "🎯",
+        "行业动态": "📰", "技术社区": "💬", "技术资讯": "🛠️",
+    }
     for cat, items in categories.items():
         icon = cat_icons.get(cat, "📌")
         links_html += f'<h3 style="color:#555;margin:16px 0 8px;font-size:14px;border-bottom:1px solid #eee;padding-bottom:4px">{icon} {html.escape(cat)}</h3>'
@@ -271,7 +319,7 @@ def main() -> None:
 
     print("📧 构建邮件并发送...")
     today   = datetime.now(timezone(timedelta(hours=8))).strftime("%Y/%m/%d")
-    subject = f"🤖 AI 每日简报 {today}（{len(news_items)} 条）"
+    subject = f"🎬 AIGC 每日情报 {today}（{len(news_items)} 条）"
     html_content = build_email_html(summary, news_items)
     send_email(subject, html_content)
     print("🎉 完成！")
