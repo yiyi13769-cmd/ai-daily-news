@@ -152,7 +152,7 @@ def generate_summary(news_items: list[dict]) -> str:
         news_text += f"{i}. 【{item['category']}】{item['title']}\n"
         if item["summary"]:
             news_text += f"   摘要: {item['summary']}\n"
-        news_text += f"   来源: {item['source']}\n\n"
+        news_text += f"   来源: {item['source']} | 链接: {item['link']}\n\n"
 
     prompt = f"""你是一位服务于 AIGC 自媒体创作者的内容情报官。
 读者是做 AIGC 内容的自媒体博主，关注：AI 创作工具、国际信息套利、个人成长认知、提效工作流。
@@ -185,6 +185,7 @@ def generate_summary(news_items: list[dict]) -> str:
 - 优先：工具发布/更新、创作方法论、AI Agent 新进展、认知框架
 - 忽略：纯融资新闻、学术论文、基准跑分、政策文件
 - 套利判断：资讯来自英文源 且 中文资讯源中没有对应内容 → 标记为套利先机
+- **格式要求**：每条引用具体新闻时，末尾附上 `[→ 原文](对应链接url)` Markdown 链接
 
 今日新闻（{today}）：
 {news_text}"""
@@ -202,6 +203,12 @@ def generate_summary(news_items: list[dict]) -> str:
 def md_to_html(text: str) -> str:
     """把 DeepSeek 返回的 Markdown 转成简单 HTML。"""
     text = html.escape(text)
+    # Markdown 链接 [text](url)
+    text = re.sub(
+        r'\[([^\]]+)\]\(([^)]+)\)',
+        r'<a href="\2" style="color:#0066cc;text-decoration:none;font-size:12px">\1</a>',
+        text
+    )
     # 标题
     text = re.sub(r"^## (.+)$",  r'<h2 style="color:#4a4a8a;margin:20px 0 8px;font-size:18px">\1</h2>', text, flags=re.MULTILINE)
     text = re.sub(r"^### (.+)$", r'<h3 style="color:#666;margin:14px 0 6px;font-size:15px">\1</h3>',   text, flags=re.MULTILINE)
