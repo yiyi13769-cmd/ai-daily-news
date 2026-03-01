@@ -17,7 +17,7 @@ from openai import OpenAI
 RSS_SOURCES = [
     # 英文 AI 媒体
     {"name": "TechCrunch AI",      "url": "https://techcrunch.com/tag/artificial-intelligence/feed/", "category": "行业动态"},
-    {"name": "VentureBeat AI",     "url": "https://venturebeat.com/ai/feed/",                         "category": "行业动态"},
+    {"name": "VentureBeat AI",     "url": "https://venturebeat.com/feed/",                            "category": "行业动态"},
     {"name": "The Verge AI",       "url": "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml", "category": "行业动态"},
     {"name": "MIT Tech Review",    "url": "https://www.technologyreview.com/feed/",                   "category": "前沿研究"},
     {"name": "Wired AI",           "url": "https://www.wired.com/feed/tag/ai/latest/rss",             "category": "行业动态"},
@@ -33,7 +33,7 @@ RSS_SOURCES = [
     # 中文资讯
     {"name": "机器之心",            "url": "https://www.jiqizhixin.com/rss",                           "category": "中文资讯"},
     {"name": "量子位",              "url": "https://www.qbitai.com/feed",                              "category": "中文资讯"},
-    {"name": "AI 研习社",           "url": "https://www.yanxishe.com/rss",                             "category": "中文资讯"},
+    {"name": "36Kr AI",             "url": "https://36kr.com/feed",                                    "category": "中文资讯"},
 ]
 
 # AI/AIGC 关键词过滤（用于非专属 AI 源）
@@ -47,7 +47,7 @@ AI_KEYWORDS = [
 ]
 
 # 需要关键词过滤的非专属 AI 源
-NEEDS_FILTER = {"Hacker News", "MIT Tech Review", "Ars Technica AI", "Reddit ML"}
+NEEDS_FILTER = {"Hacker News", "MIT Tech Review", "Ars Technica AI", "Reddit ML", "VentureBeat AI", "36Kr AI"}
 
 HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; AINewsBot/1.0)"}
 
